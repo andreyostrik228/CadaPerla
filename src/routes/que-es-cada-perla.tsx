@@ -36,9 +36,9 @@ function QueEs() {
             están, qué dan de comer, qué hace falta llevar y a qué teléfono llamar.
           </p>
           <p>
-            Es un <strong>trabajo de clase</strong>. No somos una organización, no atendemos a
-            nadie y no sustituimos a ninguna de las entidades que aparecen aquí: solo juntamos en un
-            sitio lo que ya existe.
+            No somos una organización de ayuda y no atendemos a nadie: quien da de comer son los
+            centros que aparecen aquí. Lo que hacemos es reunir en un sitio información que está
+            repartida en guías sueltas, y enseñar siempre de dónde sale cada dato.
           </p>
         </div>
 

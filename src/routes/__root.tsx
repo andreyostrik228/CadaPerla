@@ -90,8 +90,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      // Trabajo de clase con horarios sin confirmar: no debe salir en Google
-      // cuando alguien busque de verdad dónde comer en Granada.
+      // Mientras la mayoría de los horarios sigan sin confirmar, la web no debe
+      // salir en Google a quien busque dónde comer: llegaría antes que fuentes
+      // mejores. Quitar en cuanto estén comprobados por teléfono.
       { name: "robots", content: "noindex, nofollow" },
     ],
     links: [

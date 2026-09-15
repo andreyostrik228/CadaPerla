@@ -15,7 +15,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Comedores sociales de Granada: dirección, horario y qué llevar. Trabajo de clase, datos sin confirmar.",
+          "Comedores sociales de Granada: dirección, teléfono, horario y qué llevar.",
       },
       { property: "og:title", content: "Cada Perla — Comida cerca de ti, hoy" },
       {

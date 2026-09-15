@@ -29,8 +29,8 @@ function Contacto() {
       <main className="mx-auto max-w-3xl px-4 py-10">
         <h1 className="font-display text-3xl font-bold text-primary">A quién llamar</h1>
         <p className="mt-3 text-lg text-foreground">
-          Cada Perla no atiende a nadie por teléfono: es un trabajo de clase, no una organización.
-          Estas sí son las entidades reales de Granada, y estos son sus teléfonos.
+          Cada Perla no atiende a nadie por teléfono: no somos una organización de ayuda. Estas sí
+          lo son, y estos son sus teléfonos.
         </p>
 
         <div className="mt-8 space-y-4">
@@ -74,8 +74,7 @@ function Contacto() {
 
         <p className="mt-8 rounded-xl border border-line bg-white p-5 text-base text-warm">
           ¿Has visto un horario mal puesto o falta un comedor? Es muy probable: los datos salen de
-          guías públicas y algunos son antiguos. Díselo a tu profesor o a quien te haya pasado esta
-          web, y se corrige.
+          guías públicas y algunos son antiguos. Escríbenos y lo corregimos.
         </p>
       </main>
       <PieDePagina />

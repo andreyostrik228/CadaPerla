@@ -10,8 +10,8 @@ export function PieDePagina() {
         <div>
           <LogoCadaPerla size={32} />
           <p className="mt-3 max-w-sm text-base text-warm">
-            Reunimos en un sitio los comedores sociales de Granada capital. Trabajo de clase: no
-            somos un servicio oficial y no sustituimos a ninguna de las entidades que aparecen aquí.
+            Reunimos en un sitio los comedores sociales de Granada capital. No somos una
+            organización de ayuda: quien atiende son los centros que aparecen aquí.
           </p>
         </div>
         <div>

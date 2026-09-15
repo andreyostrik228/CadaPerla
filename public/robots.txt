@@ -1,4 +1,5 @@
-# Trabajo de clase con horarios sin confirmar. No debe aparecer en buscadores
-# cuando alguien busque de verdad dónde comer en Granada.
+# Mientras la mayoría de los horarios sigan sin confirmar, la web no debe
+# aparecer en buscadores a quien busque dónde comer en Granada: llegaría antes
+# que fuentes mejores. Quitar este bloqueo en cuanto estén comprobados.
 User-agent: *
 Disallow: /

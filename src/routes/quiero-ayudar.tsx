@@ -31,8 +31,8 @@ function QuieroAyudar() {
       <main className="mx-auto max-w-3xl px-4 py-10">
         <h1 className="font-display text-3xl font-bold text-primary sm:text-4xl">Quiero ayudar</h1>
         <p className="mt-3 text-lg text-foreground">
-          Nosotros no recogemos ni dinero ni alimentos: esto es un trabajo de clase. Si quieres
-          ayudar, hazlo directamente con las entidades que sí lo hacen.
+          Nosotros no recogemos ni dinero ni alimentos. Si quieres ayudar, hazlo directamente con
+          las entidades que sí lo hacen.
         </p>
 
         <section className="mt-8 rounded-xl border border-line bg-white p-6">
