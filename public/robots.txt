@@ -1,0 +1,4 @@
+# Trabajo de clase con horarios sin confirmar. No debe aparecer en buscadores
+# cuando alguien busque de verdad dónde comer en Granada.
+User-agent: *
+Disallow: /
