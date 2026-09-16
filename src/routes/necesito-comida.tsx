@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Search } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { AEstaHora } from "@/components/AEstaHora";
 import { Aviso } from "@/components/Aviso";
 import { Cabecera } from "@/components/Cabecera";
 import { FichaPunto } from "@/components/FichaPunto";
@@ -50,6 +51,10 @@ function NecesitoComida() {
           Escribe tu barrio o tu código postal y te decimos qué comedores tienes cerca. Llama antes
           de ir: la mayoría de los horarios no están confirmados.
         </p>
+
+        <div className="mt-6">
+          <AEstaHora puntos={PUNTOS} />
+        </div>
 
         <form
           className="mt-6 flex flex-col gap-3 sm:flex-row"

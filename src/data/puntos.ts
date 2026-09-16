@@ -197,6 +197,142 @@ export function estaAbierto(punto: Punto, ahora: Date): boolean | null {
   return min >= aMinutos(abre) && min < aMinutos(cierra);
 }
 
+/**
+ * Franjas horarias españolas típicas, para el bloque "A esta hora". Es un
+ * juicio nuestro, no un dato — ningún punto sin verificar tiene hora real,
+ * así que esto es lo mejor que se puede decir sin inventar una. Por eso hay
+ * que enseñarlas en la interfaz como lo que son ("orientativo"), y por eso
+ * NUNCA se usan en un punto verificado: donde hay una hora real (`apertura`),
+ * manda esa, no la franja — ver `queHayAhora`.
+ */
+export const FRANJAS: Record<Servicio, { desde: string; hasta: string }> = {
+  Desayuno: { desde: "07:00", hasta: "11:00" },
+  Comida: { desde: "13:00", hasta: "15:30" },
+  Merienda: { desde: "16:00", hasta: "19:00" },
+  Cena: { desde: "20:00", hasta: "22:00" },
+};
+
+export type ProximaApertura = {
+  punto: Punto;
+  servicio: Servicio;
+  horaTexto: string;
+  minutosHasta: number;
+};
+
+export type EnFranja = { puntos: Punto[]; servicio: Servicio };
+
+export type EstadoAhora = {
+  /**
+   * Verificados y de verdad abiertos ahora, con hora real comprobada. Solo
+   * aquí se puede decir "abierto" sin matizarlo — es la única afirmación de
+   * la que este bloque puede responder.
+   */
+  confirmadosAbiertos: Punto[];
+  /**
+   * Sin verificar, dentro de la franja del servicio que le toca ahora. NUNCA
+   * "abierto": solo sabemos que a esta hora suele tocar ese servicio, con
+   * una franja que nos hemos inventado nosotros — así que aquí se avisa,
+   * nunca se afirma. Como las franjas no se solapan entre sí, como mucho
+   * hay un servicio activo a la vez, así que basta un único grupo.
+   */
+  enFranja: EnFranja | null;
+  /** Solo si los dos de arriba están vacíos: el próximo en abrir, sea quien sea. */
+  proximo: ProximaApertura | null;
+};
+
+function minutosHastaHoraDiaria(horaTexto: string, ahoraMin: number): number {
+  const inicio = aMinutos(horaTexto);
+  return inicio > ahoraMin ? inicio - ahoraMin : inicio + (24 * 60 - ahoraMin);
+}
+
+/**
+ * Qué se sabe de comer ahora mismo — separado en dos grupos que nunca se
+ * mezclan, porque no tienen el mismo grado de certeza:
+ *
+ * - `confirmadosAbiertos`: hora real, verificada. Se puede afirmar.
+ * - `enFranja`: solo una franja orientativa que nos hemos inventado
+ *   nosotros. Nunca se afirma que esté abierto, solo que "suele tocar".
+ *
+ * Si los dos están vacíos, `proximo` da la siguiente opción — nunca se deja
+ * a alguien con hambre sin ninguna respuesta útil.
+ */
+export function queHayAhora(puntos: Punto[], ahora: Date): EstadoAhora {
+  const ahoraMin = ahora.getHours() * 60 + ahora.getMinutes();
+  const diaSemana = ahora.getDay();
+  const confirmadosAbiertos: Punto[] = [];
+  const candidatos: ProximaApertura[] = [];
+  const enFranjaPorServicio = new Map<Servicio, Punto[]>();
+
+  for (const punto of puntos) {
+    if (punto.verificado && punto.apertura) {
+      if (estaAbierto(punto, ahora)) {
+        confirmadosAbiertos.push(punto);
+        continue;
+      }
+      // Próxima apertura real: recorre los próximos 7 días hasta el primero
+      // que esté en `dias` y cuya hora de apertura no haya pasado ya hoy.
+      for (let delta = 0; delta < 8; delta++) {
+        const dia = (diaSemana + delta) % 7;
+        if (!punto.apertura.dias.includes(dia)) continue;
+        const aperturaMin = aMinutos(punto.apertura.abre);
+        if (delta === 0 && aperturaMin <= ahoraMin) continue;
+        const minutosHasta =
+          delta === 0 ? aperturaMin - ahoraMin : aperturaMin + (delta * 24 * 60 - ahoraMin);
+        candidatos.push({
+          punto,
+          servicio: punto.servicios[0]!,
+          horaTexto: punto.apertura.abre,
+          minutosHasta,
+        });
+        break;
+      }
+      continue;
+    }
+
+    // Sin verificar: usamos la franja de cada servicio que ofrece.
+    for (const servicio of punto.servicios) {
+      const franja = FRANJAS[servicio];
+      const inicio = aMinutos(franja.desde);
+      const fin = aMinutos(franja.hasta);
+      if (ahoraMin >= inicio && ahoraMin < fin) {
+        const lista = enFranjaPorServicio.get(servicio) ?? [];
+        lista.push(punto);
+        enFranjaPorServicio.set(servicio, lista);
+      } else {
+        candidatos.push({
+          punto,
+          servicio,
+          horaTexto: franja.desde,
+          minutosHasta: minutosHastaHoraDiaria(franja.desde, ahoraMin),
+        });
+      }
+    }
+  }
+
+  // Las franjas no se solapan (ver FRANJAS), así que como mucho hay una
+  // entrada aquí. Si en el futuro se cambian las franjas y llegan a
+  // solaparse, esto solo enseñaría la primera — habría que revisar entonces.
+  const [servicioActivo, puntosEnFranja] = enFranjaPorServicio.entries().next().value ?? [];
+  const enFranja: EnFranja | null = servicioActivo
+    ? { servicio: servicioActivo, puntos: puntosEnFranja! }
+    : null;
+
+  if (confirmadosAbiertos.length > 0 || enFranja) {
+    return { confirmadosAbiertos, enFranja, proximo: null };
+  }
+
+  candidatos.sort((a, b) => a.minutosHasta - b.minutosHasta);
+  return { confirmadosAbiertos: [], enFranja: null, proximo: candidatos[0] ?? null };
+}
+
+export function formatoDuracion(minutos: number): string {
+  const horas = Math.floor(minutos / 60);
+  const mins = minutos % 60;
+  if (horas === 0) return `en ${mins} min`;
+  if (mins === 0) return `en ${horas} h`;
+  return `en ${horas} h ${mins} min`;
+}
+
 export function telefonoEnlace(telefono: string) {
   return "+34" + telefono.replace(/\s/g, "");
 }
