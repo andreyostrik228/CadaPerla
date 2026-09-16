@@ -38,15 +38,42 @@ todavía).
 
 ---
 
+## Códigos postales de los 4 — de dónde sale cada uno
+
+Ahora los cuatro tienen código postal, con dos niveles de certeza distintos.
+Se dice así de claro para no hacer pasar una cosa por otra:
+
+| Comedor | CP | Fuente | Qué tan seguro es |
+|---|---|---|---|
+| San Juan de Dios | 18001 | [Buscador de códigos postales por calle](https://www.codigospostales.com/codigo-postal-de/SAN-JUAN-DE-DIOS/Granada/180/18001) — el de la calle San Juan de Dios en Granada. | Es el CP de la calle entera, no confirmado número por número, pero San Juan de Dios 19 es una calle corta y sin cruce de distrito conocido: riesgo bajo. |
+| Regina Mundi | 18004 | [Buscador de códigos postales por calle](https://www.codigospostales.com/codigo-postal-de/PURCHIL,Camino/Granada/180/18004) — el de Camino de Purchil. | **Es el CP de la calle, no verificado específicamente para el número 8.** Camino de Purchil es más larga; si cruza de distrito postal en algún tramo, el número 8 podría no coincidir. No se ha comprobado con Correos ni con la propia entidad. |
+| Calor y Café | 18014 | Su propia web ([calorycafe.com/contacto](https://calorycafe.com/contacto/)): *"C.P.18014"*, literal. | El más seguro de los cuatro: lo da la propia entidad para su propia dirección. |
+| EDICOMA | 18001 | Su propia web ([comedorcorazondemaria.org](https://comedorcorazondemaria.org/)): *"CP 18001 Granada"*, literal. | Igual de seguro: lo da la propia entidad. |
+
+El riesgo de un CP impreciso es bajo comparado con un horario impreciso: como
+mucho, una búsqueda por ese código no encuentra el comedor que sí existe —
+nunca manda a nadie a una dirección equivocada, porque el buscador por CP es
+un atajo hacia la ficha, no la dirección que se muestra o se usa para el
+mapa.
+
+---
+
 ## Ya publicados — revisión uno a uno
 
-### 1. Comedor Social San Juan de Dios — `VERIFICADO`, un dato nuevo (correo)
+### 1. Comedor Social San Juan de Dios — `VERIFICADO`, un correo dudoso (no usar)
 
 Los datos ya publicados (horario 12:45–13:30 todos los días, sin cita) se
-confirman otra vez. Nuevo: un correo de contacto que no estaba en `puntos.ts`:
+confirman otra vez.
 
-> **comunicación.granada@sjd.es**, según su propia web. También aparece un
-> teléfono gratuito adicional: **900 927 772**, que ya está en la ficha.
+⚠️ **El correo "comunicación.granada@sjd.es" no se ha podido verificar y
+huele a error.** Lleva una tilde en la parte local (antes de la @), que
+ninguna institución española usa en la práctica — lo más probable es que sea
+un efecto de maquetación de la página, no la dirección real. Buscando por
+separado sí aparecen otras direcciones reales de la misma organización, sin
+tilde: `residencia.granada@sjd.es`, `granada1@sjd.es`. Ninguna de las dos es
+la de comunicación, así que **no se añade ningún correo de San Juan de Dios
+a `puntos.ts`** hasta confirmarlo por teléfono. Queda aquí solo como aviso
+para no repetir el error.
 
 ### 2. Comedor Social Regina Mundi — `GUÍA`, discrepancia de teléfono sin resolver
 
@@ -73,9 +100,17 @@ atender es tan malo como mandarlo a uno cerrado.
 
 ### 3. Asociación Calor y Café — `GUÍA`, dos datos corregidos (ver arriba)
 
-Confirmado con su propia web: dirección, "Barrio de la Cruz", **tres**
-teléfonos, código postal **18014**. El horario de desayunos y meriendas
-sigue sin publicarse en ningún sitio — no sube a `VERIFICADO`.
+Confirmado con su propia web: dirección ("C/ El Guerra 16, Bajo" — el "Bajo"
+también lo dice su web y ayuda a encontrar la puerta), "Barrio de la Cruz",
+**tres** teléfonos, código postal **18014**. El horario de desayunos y
+meriendas sigue sin publicarse en ningún sitio — no sube a `VERIFICADO`.
+
+⚠️ **Aviso sobre una atribución que se corrigió.** En un primer momento se
+cambió la `fuente` de la ficha entera a la web oficial, porque ahí salían el
+teléfono y la dirección. Error: esa web **no dice nada** de qué ofrece
+(desayunos y meriendas, no comidas), ni de las duchas — eso sigue viniendo
+solo de la guía de Cruz Blanca. Ahora la ficha cita las dos fuentes por
+separado, cada una con lo que confirma exactamente.
 
 ### 4. Centro Social Hogar Corazón de María (EDICOMA) — `GUÍA`, un dato nuevo (correo)
 
