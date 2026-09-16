@@ -107,12 +107,23 @@ export function MapaPuntos({ puntos }: { puntos: Punto[] }) {
 
   return (
     <div className="relative">
+      {/*
+        `role="region"`, no "application": ese rol le dice al lector de
+        pantalla que le ceda al mapa todas las teclas, quitándole al usuario
+        su navegación normal — un antipatrón para un mapa de solo consulta.
+        La lista de fichas debajo tiene la misma información en texto, así
+        que se anuncia por si alguien con lector de pantalla prefiere saltar
+        el mapa directamente.
+      */}
       <div
         ref={contenedor}
         className="h-[380px] w-full rounded-xl border border-line bg-muted"
-        role="application"
+        role="region"
         aria-label="Mapa con los comedores sociales de Granada"
       />
+      <p className="sr-only">
+        La lista de comedores debajo de este mapa tiene la misma información en texto.
+      </p>
       {estado !== "listo" && (
         <p className="absolute inset-0 flex items-center justify-center rounded-xl text-base text-warm">
           {estado === "cargando"
