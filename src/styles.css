@@ -3,6 +3,34 @@
 @import "tw-animate-css";
 @import "leaflet/dist/leaflet.css";
 
+/*
+ * Fuentes autoalojadas en vez de Google Fonts: la regla 6 del briefing
+ * prohíbe cargar de terceros, y aunque Google Fonts no ponga cookies, sí
+ * recibe la IP de cada visitante — y esta web la usa gente con motivos
+ * reales para no querer que su visita quede registrada en un tercero.
+ *
+ * Un solo archivo por familia: tanto Fraunces (600 y 700) como Public Sans
+ * (400, 500 y 600) son "variable fonts" — Google servía el mismo .woff2
+ * físico para los tres pesos de cada familia, así que aquí basta con un
+ * @font-face por familia y el navegador elige el peso dentro del archivo.
+ * Subconjunto "latin" (U+0000-00FF), el mismo que ya usaba Google Fonts
+ * para esta página: cubre toda la tipografía española (áéíóúñü incluidas).
+ */
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/fraunces-variable-latin.woff2") format("woff2");
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Public Sans";
+  src: url("/fonts/public-sans-variable-latin.woff2") format("woff2");
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 /*

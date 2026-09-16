@@ -127,12 +127,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600&display=swap",
-      },
+      // Fuentes autoalojadas (ver styles.css) — sin preconnect ni stylesheet
+      // de Google Fonts: cero peticiones a terceros para cargar la tipografía.
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
