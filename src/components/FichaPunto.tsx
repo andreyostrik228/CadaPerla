@@ -81,7 +81,11 @@ export function FichaPunto({ punto }: { punto: Punto }) {
         )}
       </ul>
 
-      <div className="mt-5 flex flex-wrap gap-2">
+      {punto.notaTelefonos && (
+        <p className="mt-4 text-base text-foreground">{punto.notaTelefonos}</p>
+      )}
+
+      <div className="mt-3 flex flex-wrap gap-2">
         {punto.telefonos.map((t) => (
           <a
             key={t}
@@ -105,11 +109,29 @@ export function FichaPunto({ punto }: { punto: Punto }) {
 
       <p className="mt-4 border-t border-line pt-3 text-sm text-warm">
         {punto.coords.exacta ? "" : "Situación en el mapa aproximada. "}
-        Dato sacado de{" "}
-        <a className="underline" href={punto.fuente.url} target="_blank" rel="noreferrer">
-          {punto.fuente.texto}
-        </a>
-        .
+        {punto.fuentes.length === 1 ? (
+          <>
+            Dato sacado de{" "}
+            <a className="underline" href={punto.fuentes[0]!.url} target="_blank" rel="noreferrer">
+              {punto.fuentes[0]!.texto}
+            </a>
+            .
+          </>
+        ) : (
+          <>
+            Datos sacados de:{" "}
+            {punto.fuentes.map((f, i) => (
+              <span key={f.url}>
+                {i > 0 && " · "}
+                <a className="underline" href={f.url} target="_blank" rel="noreferrer">
+                  {f.texto}
+                </a>
+                {f.confirma && ` (${f.confirma})`}
+              </span>
+            ))}
+            .
+          </>
+        )}
       </p>
     </article>
   );

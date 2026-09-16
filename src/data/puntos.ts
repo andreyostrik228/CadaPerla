@@ -15,7 +15,18 @@ export type Punto = {
   entidad?: string;
   direccion: string;
   barrio: string;
+  /** Otros nombres por los que se conoce la zona (el oficial va en `barrio`). */
+  aliasBarrio?: string[];
+  codigoPostal?: string;
   telefonos: string[];
+  /**
+   * Por qué hay más de un teléfono, cuando no es obvio (varias líneas de la
+   * misma entidad) — p. ej. dos fuentes públicas dan números distintos y no
+   * hay forma de saber cuál es el bueno. Se muestra junto a los botones de
+   * llamada, no al final de la ficha: es la explicación que hace falta antes
+   * de marcar, no una nota a pie de página.
+   */
+  notaTelefonos?: string;
   servicios: Servicio[];
   /** Horario en texto. `null` = no se ha podido confirmar. */
   horario: string | null;
@@ -25,7 +36,15 @@ export type Punto = {
   apertura?: { dias: number[]; abre: string; cierra: string };
   requisitos: string;
   nota?: string;
-  fuente: { texto: string; url: string };
+  /**
+   * Uno o más orígenes de los datos de la ficha. Casi siempre uno solo. Si
+   * hay más de uno (p. ej. la propia entidad confirma dirección y teléfono,
+   * pero una guía de terceros es la única fuente de los servicios y el
+   * horario), cada fuente lleva su propio `confirma` explicando qué parte
+   * de la ficha respalda — para no acreditarle a una fuente algo que no
+   * dice. `confirma` se omite cuando la fuente respalda toda la ficha.
+   */
+  fuentes: { texto: string; url: string; confirma?: string }[];
   coords: { lat: number; lng: number; exacta: boolean };
 };
 
@@ -42,6 +61,7 @@ export const PUNTOS: Punto[] = [
     entidad: "Orden Hospitalaria San Juan de Dios",
     direccion: "C/ San Juan de Dios 19 — entrada por la rampa del comedor, en el Hospital de San Rafael",
     barrio: "Centro",
+    codigoPostal: "18001",
     telefonos: ["958 27 57 00", "900 92 77 72"],
     servicios: ["Comida"],
     horario: "Todos los días, de 12:45 a 13:30",
@@ -49,7 +69,9 @@ export const PUNTOS: Punto[] = [
     apertura: { dias: [0, 1, 2, 3, 4, 5, 6], abre: "12:45", cierra: "13:30" },
     requisitos:
       "Sin cita. La primera vez basta con DNI, NIE o pasaporte y puedes comer 3 días. Después te hacen un carné y piden más papeles.",
-    fuente: { texto: "Web de San Juan de Dios Granada", url: "https://www.sjdgranada.es/solidaridad-granada" },
+    fuentes: [
+      { texto: "Web de San Juan de Dios Granada", url: "https://www.sjdgranada.es/solidaridad-granada" },
+    ],
     coords: { lat: 37.18097, lng: -3.60306, exacta: true },
   },
   {
@@ -58,27 +80,45 @@ export const PUNTOS: Punto[] = [
     entidad: "Hijas de la Caridad",
     direccion: "Camino de Purchil 8",
     barrio: "Ronda",
-    telefonos: ["958 25 07 58"],
+    codigoPostal: "18004",
+    telefonos: ["958 25 07 58", "958 26 35 44"],
+    notaTelefonos:
+      "Dos fuentes públicas dan teléfonos distintos y no hay forma de saber cuál es el bueno sin llamar: si el primero no contesta, prueba el segundo.",
     servicios: ["Comida"],
     horario: null,
     verificado: false,
     requisitos: "Sin confirmar. Llama antes de ir.",
     nota: "También tiene duchas (de lunes a sábado, de 10:00 a 12:00), lavadora (de lunes a viernes) y peluquería (lunes).",
-    fuente: GUIA_CRUZ_BLANCA,
+    fuentes: [GUIA_CRUZ_BLANCA],
     coords: { lat: 37.17355, lng: -3.60821, exacta: false },
   },
   {
     id: "calor-y-cafe",
     nombre: "Asociación Calor y Café",
-    direccion: "C/ El Guerra 16",
+    direccion: "C/ El Guerra 16, Bajo",
     barrio: "Beiro",
-    telefonos: ["958 16 33 16"],
+    aliasBarrio: ["Barrio de la Cruz"],
+    codigoPostal: "18014",
+    telefonos: ["958 20 93 83", "958 16 33 16", "699 97 05 26"],
     servicios: ["Desayuno", "Merienda"],
     horario: null,
     verificado: false,
     requisitos: "Sin confirmar. Llama antes de ir.",
     nota: "Es un centro de día: da desayunos y meriendas, no comidas. También tiene duchas de lunes a sábado por las tardes.",
-    fuente: GUIA_CRUZ_BLANCA,
+    // Su propia web solo publica dirección y teléfonos — nada de servicios,
+    // duchas ni horario. Esos datos siguen viniendo solo de la guía de Cruz
+    // Blanca, así que se citan las dos fuentes por separado.
+    fuentes: [
+      {
+        texto: "Web oficial de la Fundación Calor y Café",
+        url: "https://calorycafe.com/contacto/",
+        confirma: "dirección y teléfonos",
+      },
+      {
+        ...GUIA_CRUZ_BLANCA,
+        confirma: "qué ofrece y el resto de datos",
+      },
+    ],
     coords: { lat: 37.19458, lng: -3.61131, exacta: true },
   },
   {
@@ -87,13 +127,14 @@ export const PUNTOS: Punto[] = [
     entidad: "Asociación EDICOMA",
     direccion: "C/ Colegios s/n",
     barrio: "Centro",
+    codigoPostal: "18001",
     telefonos: ["660 64 09 66"],
     servicios: ["Desayuno", "Cena"],
     horario: null,
     verificado: false,
     requisitos: "Sin confirmar. Llama antes de ir.",
     nota: "Los desayunos solo en invierno. Las cenas, todo el año.",
-    fuente: GUIA_CRUZ_BLANCA,
+    fuentes: [GUIA_CRUZ_BLANCA],
     coords: { lat: 37.17888, lng: -3.60249, exacta: false },
   },
 ];

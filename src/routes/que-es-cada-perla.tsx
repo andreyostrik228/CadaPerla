@@ -21,7 +21,7 @@ export const Route = createFileRoute("/que-es-cada-perla")({
 });
 
 function QueEs() {
-  const fuentes = [...new Map(PUNTOS.map((p) => [p.fuente.url, p.fuente])).values()];
+  const fuentes = [...new Map(PUNTOS.flatMap((p) => p.fuentes).map((f) => [f.url, f])).values()];
 
   return (
     <div className="min-h-screen bg-background">
