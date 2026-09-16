@@ -38,7 +38,7 @@ function Inicio() {
       <Cabecera />
       <Aviso />
 
-      <main>
+      <main id="contenido" tabIndex={-1} className="outline-none">
         <section className="mx-auto max-w-5xl px-4 pt-6 pb-2">
           <h1 className="font-display text-4xl font-bold text-primary sm:text-5xl">
             Comida cerca de ti, hoy

@@ -42,7 +42,7 @@ function NecesitoComida() {
     <div className="min-h-screen bg-background">
       <Cabecera />
       <Aviso />
-      <main className="mx-auto max-w-5xl px-4 py-10">
+      <main id="contenido" tabIndex={-1} className="mx-auto max-w-5xl px-4 py-10 outline-none">
         <h1 className="font-display text-3xl font-bold text-primary sm:text-4xl">¿Dónde estás?</h1>
         <p className="mt-3 text-lg text-foreground">
           Escribe tu barrio y te decimos qué comedores tienes cerca. Llama antes de ir: la mayoría

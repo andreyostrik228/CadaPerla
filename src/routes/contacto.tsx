@@ -26,7 +26,7 @@ function Contacto() {
     <div className="min-h-screen bg-background">
       <Cabecera />
       <Aviso />
-      <main className="mx-auto max-w-3xl px-4 py-10">
+      <main id="contenido" tabIndex={-1} className="mx-auto max-w-3xl px-4 py-10 outline-none">
         <h1 className="font-display text-3xl font-bold text-primary">A quién llamar</h1>
         <p className="mt-3 text-lg text-foreground">
           Cada Perla no atiende a nadie por teléfono: no somos una organización de ayuda. Estas sí

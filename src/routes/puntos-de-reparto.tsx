@@ -41,7 +41,7 @@ function PuntosDeReparto() {
     <div className="min-h-screen bg-background">
       <Cabecera />
       <Aviso />
-      <main className="mx-auto max-w-5xl px-4 py-10">
+      <main id="contenido" tabIndex={-1} className="mx-auto max-w-5xl px-4 py-10 outline-none">
         <h1 className="font-display text-3xl font-bold text-primary sm:text-4xl">
           Comedores sociales
         </h1>

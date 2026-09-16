@@ -28,7 +28,7 @@ function QuieroAyudar() {
     <div className="min-h-screen bg-background">
       <Cabecera />
       <Aviso />
-      <main className="mx-auto max-w-3xl px-4 py-10">
+      <main id="contenido" tabIndex={-1} className="mx-auto max-w-3xl px-4 py-10 outline-none">
         <h1 className="font-display text-3xl font-bold text-primary sm:text-4xl">Quiero ayudar</h1>
         <p className="mt-3 text-lg text-foreground">
           Nosotros no recogemos ni dinero ni alimentos. Si quieres ayudar, hazlo directamente con

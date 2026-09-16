@@ -42,7 +42,7 @@ function Preguntas() {
     <div className="min-h-screen bg-background">
       <Cabecera />
       <Aviso />
-      <main className="mx-auto max-w-3xl px-4 py-10">
+      <main id="contenido" tabIndex={-1} className="mx-auto max-w-3xl px-4 py-10 outline-none">
         <h1 className="font-display text-3xl font-bold text-primary">Preguntas</h1>
         <dl className="mt-6 space-y-4">
           {PREGUNTAS.map((q) => (

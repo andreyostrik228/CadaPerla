@@ -27,7 +27,7 @@ function QueEs() {
     <div className="min-h-screen bg-background">
       <Cabecera />
       <Aviso />
-      <main className="mx-auto max-w-3xl px-4 py-10">
+      <main id="contenido" tabIndex={-1} className="mx-auto max-w-3xl px-4 py-10 outline-none">
         <h1 className="font-display text-3xl font-bold text-primary">Qué es Cada Perla</h1>
 
         <div className="mt-6 space-y-4 text-lg text-foreground">
