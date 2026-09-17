@@ -82,7 +82,8 @@ function NecesitoComida() {
           </button>
         </form>
 
-        <p className="mt-6 text-base text-warm" aria-live="polite">
+        <h2 className="mt-8 font-display text-xl font-semibold text-foreground">Resultados</h2>
+        <p className="mt-2 text-base text-warm" aria-live="polite">
           {resultados.length} {resultados.length === 1 ? "comedor" : "comedores"} en Granada capital.
         </p>
 

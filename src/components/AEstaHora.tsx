@@ -8,6 +8,7 @@ import {
   queHayAhora,
   telefonoEnlace,
   type EstadoAhora,
+  type ProximaApertura,
   type Punto,
 } from "@/data/puntos";
 import { FichaPunto } from "./FichaPunto";
@@ -18,10 +19,10 @@ import { FichaPunto } from "./FichaPunto";
  * (error #418 de React, ver `useAbierto` en FichaPunto). Mismo patrón aquí:
  * se calcula ya montado, y hasta entonces no se pinta nada.
  */
-function useEstadoAhora(puntos: Punto[]) {
+export function useEstadoAhora(puntos: Punto[] | null): EstadoAhora | null {
   const [estado, setEstado] = useState<EstadoAhora | null>(null);
   useEffect(() => {
-    setEstado(queHayAhora(puntos, new Date()));
+    setEstado(puntos ? queHayAhora(puntos, new Date()) : null);
   }, [puntos]);
   return estado;
 }
@@ -32,7 +33,9 @@ function useEstadoAhora(puntos: Punto[]) {
  * primer intento de este bloque, y era falso para 3 de los 4 comedores —
  * la ficha decía "HORARIO SIN CONFIRMAR" justo debajo de un titular que
  * acababa de afirmar lo contrario. Aquí cada grupo solo dice lo que de
- * verdad sabemos.
+ * verdad sabemos. `GrupoConfirmados`, `GrupoEnFranja` y `SinNadaAbierto` se
+ * exportan sueltos porque `/puntos-de-reparto` los reutiliza con su propio
+ * filtro de barrio y servicio en vez de este componente entero.
  */
 export function AEstaHora({ puntos }: { puntos: Punto[] }) {
   const estado = useEstadoAhora(puntos);
@@ -48,37 +51,15 @@ export function AEstaHora({ puntos }: { puntos: Punto[] }) {
       ) : (
         <>
           {estado.confirmadosAbiertos.length > 0 && (
-            <div className="mt-3">
-              <p className="text-base text-foreground">
-                Confirmado: <strong className="font-semibold">abierto ahora mismo.</strong>
-              </p>
-              <div className="mt-3 grid gap-4 sm:grid-cols-2">
-                {estado.confirmadosAbiertos.map((p) => (
-                  <FichaPunto key={p.id} punto={p} />
-                ))}
-              </div>
-            </div>
+            <GrupoConfirmados puntos={estado.confirmadosAbiertos} />
           )}
 
           {estado.enFranja && (
-            <div className={estado.confirmadosAbiertos.length > 0 ? "mt-6" : "mt-3"}>
-              <p className="text-base text-foreground">
-                A esta hora suele tocar{" "}
-                <strong className="font-semibold">{estado.enFranja.servicio.toLowerCase()}</strong> en
-                estos sitios, pero no tenemos su horario confirmado — es una franja{" "}
-                <strong className="font-semibold">orientativa</strong> que nos hemos inventado
-                nosotros, no un dato real. Llama antes de ir.
-              </p>
-              <div className="mt-3 grid gap-4 sm:grid-cols-2">
-                {estado.enFranja.puntos.map((p) => (
-                  <FichaPunto key={p.id} punto={p} />
-                ))}
-              </div>
-            </div>
+            <GrupoEnFranja enFranja={estado.enFranja} conEspacioArriba={estado.confirmadosAbiertos.length > 0} />
           )}
 
           {estado.confirmadosAbiertos.length === 0 && !estado.enFranja && (
-            <SinNadaAbierto estado={estado} />
+            <SinNadaAbierto proximo={estado.proximo} />
           )}
         </>
       )}
@@ -97,20 +78,94 @@ export function AEstaHora({ puntos }: { puntos: Punto[] }) {
   );
 }
 
-function SinNadaAbierto({ estado }: { estado: EstadoAhora }) {
+export function GrupoConfirmados({ puntos }: { puntos: Punto[] }) {
+  return (
+    <div className="mt-3">
+      <p className="text-base text-foreground">
+        Confirmado: <strong className="font-semibold">abierto ahora mismo.</strong>
+      </p>
+      <div className="mt-3 grid gap-4 sm:grid-cols-2">
+        {puntos.map((p) => (
+          <FichaPunto key={p.id} punto={p} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function GrupoEnFranja({
+  enFranja,
+  conEspacioArriba,
+}: {
+  enFranja: NonNullable<EstadoAhora["enFranja"]>;
+  conEspacioArriba: boolean;
+}) {
+  return (
+    <div className={conEspacioArriba ? "mt-6" : "mt-3"}>
+      <p className="text-base text-foreground">
+        A esta hora suele tocar{" "}
+        <strong className="font-semibold">{enFranja.servicio.toLowerCase()}</strong> en estos
+        sitios, pero no tenemos su horario confirmado — es una franja{" "}
+        <strong className="font-semibold">orientativa</strong> que nos hemos inventado nosotros,
+        no un dato real. Llama antes de ir.
+      </p>
+      <div className="mt-3 grid gap-4 sm:grid-cols-2">
+        {enFranja.puntos.map((p) => (
+          <FichaPunto key={p.id} punto={p} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function SinNadaAbierto({
+  proximo,
+  mensaje = "No sabemos de ningún comedor que abra a esta hora.",
+  proximoFueraDelFiltro,
+  onQuitarFiltros,
+}: {
+  proximo: ProximaApertura | null;
+  mensaje?: string;
+  /**
+   * Solo se enseña si hay algo que abre antes fuera de un filtro activo — un
+   * filtro de barrio o servicio no puede esconder que a 20 minutos hay algo
+   * que ya abre. `puntos-de-reparto.tsx` lo calcula comparando contra la
+   * lista sin filtrar; aquí no se decide nada, solo se pinta si llega.
+   */
+  proximoFueraDelFiltro?: ProximaApertura | null;
+  onQuitarFiltros?: () => void;
+}) {
   return (
     <div className="mt-2">
-      <p className="text-base text-foreground">
-        No sabemos de ningún comedor que abra a esta hora.
-      </p>
+      <p className="text-base text-foreground">{mensaje}</p>
 
-      {estado.proximo && (
+      {proximo && (
         <p className="mt-2 text-base text-foreground">
           Lo próximo en abrir:{" "}
           <strong className="font-semibold">
-            {estado.proximo.servicio.toLowerCase()} de {estado.proximo.punto.nombre}
+            {proximo.servicio.toLowerCase()} de {proximo.punto.nombre}
           </strong>
-          , a las {estado.proximo.horaTexto} ({formatoDuracion(estado.proximo.minutosHasta)}).
+          , a las {proximo.horaTexto} ({formatoDuracion(proximo.minutosHasta)}).
+        </p>
+      )}
+
+      {proximoFueraDelFiltro && (
+        <p className="mt-2 text-base text-foreground">
+          Quitando los filtros, hay algo antes:{" "}
+          <strong className="font-semibold">
+            {proximoFueraDelFiltro.servicio.toLowerCase()} de {proximoFueraDelFiltro.punto.nombre}
+          </strong>
+          , a las {proximoFueraDelFiltro.horaTexto} ({formatoDuracion(proximoFueraDelFiltro.minutosHasta)}
+          ).{" "}
+          {onQuitarFiltros && (
+            <button
+              type="button"
+              onClick={onQuitarFiltros}
+              className="font-semibold text-primary underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              Quitar filtros
+            </button>
+          )}
         </p>
       )}
 
