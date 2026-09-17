@@ -24,6 +24,30 @@ declare global {
 
 const LEAFLET_JS = "/leaflet/leaflet.js";
 
+/**
+ * Construye el contenido del popup con el DOM, no con una plantilla de texto:
+ * `bindPopup` de Leaflet mete un string tal cual como HTML, así que interpolar
+ * `nombre`/`direccion` ahí sería una puerta abierta a HTML/JS inyectado si
+ * algún día esos datos dejan de ser fijos a mano. `textContent` los escapa
+ * solo por construcción.
+ */
+function crearPopup(p: Punto): HTMLElement {
+  const horario = p.horario ?? "Horario sin confirmar — llama antes de ir.";
+  const contenedor = document.createElement("div");
+
+  const titulo = document.createElement("strong");
+  titulo.textContent = p.nombre;
+  contenedor.append(titulo, document.createElement("br"), p.direccion, document.createElement("br"), horario);
+
+  if (!p.coords.exacta) {
+    const aprox = document.createElement("em");
+    aprox.textContent = "Situación aproximada.";
+    contenedor.append(document.createElement("br"), aprox);
+  }
+
+  return contenedor;
+}
+
 function cargarLeaflet(): Promise<any> {
   if (window.L) return Promise.resolve(window.L);
 
@@ -97,16 +121,20 @@ export function MapaPuntos({ puntos }: { puntos: Punto[] }) {
     });
 
     for (const p of puntos) {
-      const horario = p.horario ?? "Horario sin confirmar — llama antes de ir.";
-      const aprox = p.coords.exacta ? "" : "<br><em>Situación aproximada.</em>";
       L.marker([p.coords.lat, p.coords.lng], { icon: icono })
-        .bindPopup(`<strong>${p.nombre}</strong><br>${p.direccion}<br>${horario}${aprox}`)
+        .bindPopup(crearPopup(p))
         .addTo(capaMarcadores.current);
     }
   }, [puntos, estado]);
 
   return (
-    <div className="relative">
+    // `isolate` crea un contexto de apilamiento propio: sin esto, los
+    // z-index internos de Leaflet (controles hasta 800, popups 700) compiten
+    // directamente contra la cabecera (z-50) en la raíz del documento — y
+    // ganan, así que el botón "+" del zoom se pintaba encima de la cabecera
+    // pegajosa al desplazar. Con `isolate`, todo lo de Leaflet queda
+    // encerrado dentro de este contenedor, por debajo de la cabecera.
+    <div className="relative isolate">
       {/*
         `role="region"`, no "application": ese rol le dice al lector de
         pantalla que le ceda al mapa todas las teclas, quitándole al usuario
