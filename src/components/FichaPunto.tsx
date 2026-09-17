@@ -1,7 +1,7 @@
 import { CalendarClock, Clock, Info, MapPin, Phone, Utensils } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { estaAbierto, telefonoEnlace, type Punto } from "@/data/puntos";
+import { enlaceComoLlegar, estaAbierto, formatoFecha, telefonoEnlace, type Punto } from "@/data/puntos";
 
 /**
  * El estado "abierto ahora" depende de la hora, que no es la misma en el
@@ -18,7 +18,7 @@ function useAbierto(punto: Punto) {
 
 export function FichaPunto({ punto }: { punto: Punto }) {
   const abierto = useAbierto(punto);
-  const mapa = `https://www.openstreetmap.org/?mlat=${punto.coords.lat}&mlon=${punto.coords.lng}#map=18/${punto.coords.lat}/${punto.coords.lng}`;
+  const mapa = enlaceComoLlegar(punto);
 
   return (
     <article className="flex h-full flex-col rounded-xl border border-line bg-white p-5">
@@ -133,6 +133,7 @@ export function FichaPunto({ punto }: { punto: Punto }) {
           </>
         )}
       </p>
+      <p className="text-sm text-warm">Comprobado el {formatoFecha(punto.revisado)}.</p>
     </article>
   );
 }

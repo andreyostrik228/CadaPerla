@@ -45,6 +45,8 @@ export type Punto = {
    * dice. `confirma` se omite cuando la fuente respalda toda la ficha.
    */
   fuentes: { texto: string; url: string; confirma?: string }[];
+  /** Última vez (AAAA-MM-DD) que alguien comprobó que las fuentes de arriba siguen diciendo esto. */
+  revisado: string;
   coords: { lat: number; lng: number; exacta: boolean };
 };
 
@@ -72,6 +74,7 @@ export const PUNTOS: Punto[] = [
     fuentes: [
       { texto: "Web de San Juan de Dios Granada", url: "https://www.sjdgranada.es/solidaridad-granada" },
     ],
+    revisado: "2026-09-17",
     coords: { lat: 37.18097, lng: -3.60306, exacta: true },
   },
   {
@@ -90,6 +93,7 @@ export const PUNTOS: Punto[] = [
     requisitos: "Sin confirmar. Llama antes de ir.",
     nota: "También tiene duchas (de lunes a sábado, de 10:00 a 12:00), lavadora (de lunes a viernes) y peluquería (lunes).",
     fuentes: [GUIA_CRUZ_BLANCA],
+    revisado: "2026-09-17",
     coords: { lat: 37.17355, lng: -3.60821, exacta: false },
   },
   {
@@ -119,6 +123,7 @@ export const PUNTOS: Punto[] = [
         confirma: "qué ofrece y el resto de datos",
       },
     ],
+    revisado: "2026-09-17",
     coords: { lat: 37.19458, lng: -3.61131, exacta: true },
   },
   {
@@ -135,6 +140,7 @@ export const PUNTOS: Punto[] = [
     requisitos: "Sin confirmar. Llama antes de ir.",
     nota: "Los desayunos solo en invierno. Las cenas, todo el año.",
     fuentes: [GUIA_CRUZ_BLANCA],
+    revisado: "2026-09-17",
     coords: { lat: 37.17888, lng: -3.60249, exacta: false },
   },
 ];
@@ -335,4 +341,40 @@ export function formatoDuracion(minutos: number): string {
 
 export function telefonoEnlace(telefono: string) {
   return "+34" + telefono.replace(/\s/g, "");
+}
+
+/**
+ * Enlace universal de Google Maps para "Cómo llegar": abre la app en
+ * Android/iOS si está instalada, o la web si no — sin clave de API ni script
+ * de terceros en la página, solo un enlace normal. (Esto no es la librería
+ * del mapa incrustado, que sigue siendo Leaflet + OpenStreetMap.)
+ *
+ * Con coordenadas exactas manda el punto preciso. Si son aproximadas
+ * (`coords.exacta === false`, ver el tipo `Punto`), manda la dirección en
+ * texto en su lugar: una ruta a pie hasta unas coordenadas aproximadas deja
+ * a alguien delante de un portal que no es, con la falsa confianza de una
+ * línea azul en el mapa. La ficha ya avisa de que la posición es
+ * aproximada — la navegación tiene que ser igual de honesta.
+ */
+export function enlaceComoLlegar(punto: Punto): string {
+  const destino = punto.coords.exacta
+    ? `${punto.coords.lat},${punto.coords.lng}`
+    : `${punto.nombre}, ${punto.direccion}, Granada`;
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destino)}`;
+}
+
+const MESES = [
+  "enero", "febrero", "marzo", "abril", "mayo", "junio",
+  "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
+];
+
+/**
+ * Convierte "2026-09-17" en "17 de septiembre de 2026" sin pasar por `Date`:
+ * parsear una fecha así con `Date` la ancla a medianoche UTC, y formatearla
+ * con la zona horaria del servidor o del navegador puede desplazarla un día
+ * — el mismo tipo de trampa que ya rompió la hidratación en otro sitio.
+ */
+export function formatoFecha(iso: string): string {
+  const [anio, mes, dia] = iso.split("-").map(Number);
+  return `${dia} de ${MESES[mes! - 1]} de ${anio}`;
 }
