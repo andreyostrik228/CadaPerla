@@ -1,0 +1,66 @@
+<meta charset="utf-8">
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Public+Sans:wght@400&display=swap");
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px; height: 630px; overflow: hidden;
+    background: #7E2438; position: relative;
+    font-family: "Public Sans", system-ui, sans-serif;
+  }
+  /* Granada gigante de fondo, apenas visible: la marca sin gritar. */
+  .fondo {
+    position: absolute; right: -60px; top: 50%; transform: translateY(-50%);
+    width: 560px; height: 560px; opacity: .13;
+  }
+  .contenido { position: absolute; left: 96px; top: 190px; }
+  .marca { display: flex; align-items: center; gap: 28px; }
+  .marca svg { width: 92px; height: 92px; }
+  .nombre {
+    font-family: "Fraunces", Georgia, serif; font-weight: 700;
+    font-size: 96px; color: #FFFFFF; line-height: 1; letter-spacing: -.5px;
+  }
+  .eslogan {
+    font-family: "Fraunces", Georgia, serif; font-weight: 700;
+    font-size: 46px; color: #F4A25F; margin-top: 46px; line-height: 1;
+  }
+  .subtexto {
+    font-size: 28px; color: #F1D9DE; margin-top: 22px; line-height: 1;
+  }
+</style>
+
+<svg class="fondo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <mask id="perlas-fondo">
+    <rect width="64" height="64" fill="#000"/>
+    <path d="M26.5 19 V6.5 L29.5 10.2 L32 3.5 L34.5 10.2 L37.5 6.5 V19 Z" fill="#fff"/>
+    <circle cx="32" cy="39" r="21.5" fill="#fff"/>
+    <circle cx="23.2" cy="30.8" r="4.6" fill="#000"/>
+    <circle cx="40.8" cy="30.8" r="4.6" fill="#000"/>
+    <circle cx="23.2" cy="47.2" r="4.6" fill="#000"/>
+    <circle cx="40.8" cy="47.2" r="4.6" fill="#000"/>
+    <circle cx="32" cy="39" r="5.8" fill="#000"/>
+  </mask>
+  <rect width="64" height="64" fill="#FFFFFF" mask="url(#perlas-fondo)"/>
+</svg>
+
+<div class="contenido">
+  <div class="marca">
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cada Perla">
+      <title>Cada Perla</title>
+      <mask id="perlas-blanco">
+        <rect width="64" height="64" fill="#000"/>
+        <path d="M26.5 19 V6.5 L29.5 10.2 L32 3.5 L34.5 10.2 L37.5 6.5 V19 Z" fill="#fff"/>
+        <circle cx="32" cy="39" r="21.5" fill="#fff"/>
+        <circle cx="23.2" cy="30.8" r="4.6" fill="#000"/>
+        <circle cx="40.8" cy="30.8" r="4.6" fill="#000"/>
+        <circle cx="23.2" cy="47.2" r="4.6" fill="#000"/>
+        <circle cx="40.8" cy="47.2" r="4.6" fill="#000"/>
+        <circle cx="32" cy="39" r="5.8" fill="#000"/>
+      </mask>
+      <rect width="64" height="64" fill="#FFFFFF" mask="url(#perlas-blanco)"/>
+      <circle cx="32" cy="39" r="5.8" fill="#E9A13B"/>
+    </svg>
+    <div class="nombre">Cada Perla</div>
+  </div>
+  <div class="eslogan">Comida cerca de ti, hoy</div>
+  <div class="subtexto">Comedores sociales de Granada · andreyostrik228.github.io</div>
+</div>

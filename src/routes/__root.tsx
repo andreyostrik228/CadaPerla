@@ -112,12 +112,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content: "Puntos de reparto de comida en Granada, con horarios actualizados.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://cada-perla.pages.dev/" },
-      { property: "og:image", content: "https://cada-perla.pages.dev/og-image.png" },
+      { property: "og:url", content: "https://andreyostrik228.github.io/" },
+      { property: "og:image", content: "https://andreyostrik228.github.io/og-image.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://cada-perla.pages.dev/og-image.png" },
+      { name: "twitter:image", content: "https://andreyostrik228.github.io/og-image.png" },
       // Mientras la mayoría de los horarios sigan sin confirmar, la web no debe
       // salir en Google a quien busque dónde comer: llegaría antes que fuentes
       // mejores. Quitar en cuanto estén comprobados por teléfono.
