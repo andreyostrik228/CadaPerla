@@ -194,3 +194,26 @@
     outline-offset: 2px;
   }
 }
+
+/*
+ * Los enlaces "Leaflet" / "OpenStreetMap" de la atribución del mapa vienen
+ * en rgb(0, 120, 168) por defecto de la librería: 4.94:1 sobre blanco
+ * sólido, justo por encima del 4.5:1 de WCAG AA y sin ningún margen.
+ *
+ * El fondo real es peor que el blanco sólido: la caja de atribución es
+ * blanco al 80% SOBRE las teselas del mapa, así que el contraste efectivo
+ * baja según lo oscura que sea la tesela de debajo. No se puede medir ese
+ * píxel compuesto —las teselas vienen de tile.openstreetmap.org sin CORS,
+ * y leer el canvas queda bloqueado—, así que el número exacto no lo sabemos:
+ * solo sabemos que es menor que 4.94 y que varía con el mapa.
+ *
+ * Por eso se oscurece hasta bastante por debajo del mínimo teórico, en vez
+ * de ajustar al filo: con un fondo que no podemos medir, el margen sustituye
+ * a la precisión. Más oscuro que el --warm del resto de la web a propósito.
+ *
+ * Se cambia el color en lugar de tocar la atribución porque enseñarla es
+ * obligatorio por la licencia de OpenStreetMap.
+ */
+.leaflet-control-attribution a {
+  color: oklch(0.4 0.024 8.5);
+}
