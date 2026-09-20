@@ -104,12 +104,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Puntos de reparto de comida en Granada: dirección, horario, cita y qué llevar. Gratis y sin datos personales.",
+          "Comedores sociales de Granada: dirección, teléfono y qué hace falta llevar. Gratis, sin datos personales, y cada dato con su fuente.",
       },
       { property: "og:title", content: "Cada Perla — Comida cerca de ti, hoy" },
       {
         property: "og:description",
-        content: "Puntos de reparto de comida en Granada, con horarios actualizados.",
+        content:
+          "Comedores sociales de Granada: dónde están, qué dan de comer y a qué teléfono llamar.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://andreyostrik228.github.io/" },
@@ -118,10 +119,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:image", content: "https://andreyostrik228.github.io/og-image.png" },
-      // Mientras la mayoría de los horarios sigan sin confirmar, la web no debe
-      // salir en Google a quien busque dónde comer: llegaría antes que fuentes
-      // mejores. Quitar en cuanto estén comprobados por teléfono.
-      { name: "robots", content: "noindex, nofollow" },
+      // Aquí hubo un `noindex, nofollow` mientras la mayoría de los horarios
+      // seguían sin confirmar. Se retira por decisión de Andrii (2026-09-20):
+      // el bloqueo también impedía que cualquier herramienta automática
+      // abriera la web, y el sitio ya no afirma tener horarios que no tiene —
+      // cada ficha marca "HORARIO SIN CONFIRMAR" y enseña su fuente.
+      // Sigue pendiente confirmar los horarios por teléfono (docs/llamadas.md).
     ],
     links: [
       {

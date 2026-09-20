@@ -1,5 +1,11 @@
-# Mientras la mayoría de los horarios sigan sin confirmar, la web no debe
-# aparecer en buscadores a quien busque dónde comer en Granada: llegaría antes
-# que fuentes mejores. Quitar este bloqueo en cuanto estén comprobados.
+# Buscadores y herramientas automáticas: bienvenidos.
+#
+# Hubo aquí un "Disallow: /" mientras la mayoría de los horarios seguían sin
+# confirmar: la web no debía aparecer en Google por delante de fuentes mejores
+# a quien buscara dónde comer en Granada. Se retira a propósito.
+#
+# Lo que no cambia: cada ficha dice de dónde sale cada dato y marca en grande
+# "HORARIO SIN CONFIRMAR" cuando no lo hemos podido comprobar. Aquí no se
+# publica ningún horario que no tenga fuente.
 User-agent: *
-Disallow: /
+Allow: /
