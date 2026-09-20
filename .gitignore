@@ -16,3 +16,6 @@ Thumbs.db
 
 *.log
 npm-debug.log*
+
+# Copia estática para GitHub Pages: tiene su propio repositorio
+estatico/
