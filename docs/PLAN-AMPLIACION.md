@@ -1,7 +1,8 @@
 # Plan: de 4 comedores a toda la ayuda de Granada
 
-Empezado el **2026-09-26**. Estado: **fases 1 a 5 hechas en el código, sin
-commit y sin desplegar**. Los recursos encontrados y cómo se encontraron están
+Empezado el **2026-09-26**. Estado: **fases 1 a 5 hechas y publicadas el
+2026-09-26** (commit `bc44ca1`; copia estática `f04abe6` en github.io; desplegado
+también en cada-perla.pages.dev y cadaperla.pages.dev). Los recursos encontrados y cómo se encontraron están
 en `docs/recursos-candidatos.md`.
 
 ## Qué cambia
@@ -68,7 +69,7 @@ Contraste de las 12 paletas comprobado con la fórmula de WCAG: el peor caso es
 | Fase | Qué | Quién |
 |---|---|---|
 | 6 | Verificación: llamar para resolver los 7 datos que no coinciden (lista en `recursos-candidatos.md`), leer a mano la guía de Albaicín, pedir al Ayuntamiento las guías de Beiro, Chana, Norte y Ronda, y mirar icagr.es desde otro ordenador | Andrii, por teléfono |
-| 7 | Commit, despliegue en Cloudflare y copia estática para github.io | **Solo con la palabra de Andrii** |
+| 7 | ~~Commit, despliegue en Cloudflare y copia estática para github.io~~ | Hecho el 2026-09-26 con la palabra de Andrii |
 
 **Para la copia estática de github.io** (ver la memoria del proyecto: se
 captura el HTML de cada ruta con curl): ahora hay que capturar **18 rutas**,
