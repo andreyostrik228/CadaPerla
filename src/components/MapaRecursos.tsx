@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
-import type { Punto } from "@/data/puntos";
+import { infoCategoria, type Categoria } from "@/data/categorias";
+import type { Recurso } from "@/data/recursos";
+import { UBICACIONES } from "@/data/ubicaciones";
 
 /**
  * Mapa con Leaflet y teselas de OpenStreetMap: gratis, sin clave de API y sin
@@ -31,15 +33,22 @@ const LEAFLET_JS = "/leaflet/leaflet.js";
  * algún día esos datos dejan de ser fijos a mano. `textContent` los escapa
  * solo por construcción.
  */
-function crearPopup(p: Punto): HTMLElement {
-  const horario = p.horario ?? "Horario sin confirmar — llama antes de ir.";
+function crearPopup(r: Recurso, exacta: boolean): HTMLElement {
   const contenedor = document.createElement("div");
 
   const titulo = document.createElement("strong");
-  titulo.textContent = p.nombre;
-  contenedor.append(titulo, document.createElement("br"), p.direccion, document.createElement("br"), horario);
+  titulo.textContent = r.nombre;
+  contenedor.append(
+    titulo,
+    document.createElement("br"),
+    r.direccion ?? "",
+    document.createElement("br"),
+  );
 
-  if (!p.coords.exacta) {
+  const telefono = r.telefonos[0];
+  contenedor.append(telefono ? `Llama antes de ir: ${telefono}` : "Llama antes de ir.");
+
+  if (!exacta) {
     const aprox = document.createElement("em");
     aprox.textContent = "Situación aproximada.";
     contenedor.append(document.createElement("br"), aprox);
@@ -67,7 +76,18 @@ function cargarLeaflet(): Promise<any> {
   });
 }
 
-export function MapaPuntos({ puntos }: { puntos: Punto[] }) {
+/**
+ * `color`: la categoría cuyo color llevan los marcadores. En la página de una
+ * categoría es esa; en el mapa general, cada marcador lleva el color de la
+ * primera categoría de su ficha.
+ */
+export function MapaRecursos({
+  recursos,
+  color,
+}: {
+  recursos: Recurso[];
+  color?: Categoria | undefined;
+}) {
   const contenedor = useRef<HTMLDivElement>(null);
   const mapa = useRef<any>(null);
   const capaMarcadores = useRef<any>(null);
@@ -110,22 +130,34 @@ export function MapaPuntos({ puntos }: { puntos: Punto[] }) {
     const L = window.L;
     capaMarcadores.current.clearLayers();
 
-    const icono = L.divIcon({
-      className: "",
-      html: `<span style="display:block;width:22px;height:22px;border-radius:50% 50% 50% 0;
-             background:#7E2438;border:3px solid #fff;transform:rotate(-45deg);
-             box-shadow:0 1px 4px rgba(0,0,0,.4)"></span>`,
-      iconSize: [22, 22],
-      iconAnchor: [11, 22],
-      popupAnchor: [0, -20],
-    });
+    const iconos = new Map<string, unknown>();
+    const icono = (hex: string) => {
+      if (!iconos.has(hex)) {
+        iconos.set(
+          hex,
+          L.divIcon({
+            className: "",
+            html: `<span style="display:block;width:22px;height:22px;border-radius:50% 50% 50% 0;
+                   background:${hex};border:3px solid #fff;transform:rotate(-45deg);
+                   box-shadow:0 1px 4px rgba(0,0,0,.4)"></span>`,
+            iconSize: [22, 22],
+            iconAnchor: [11, 22],
+            popupAnchor: [0, -20],
+          }),
+        );
+      }
+      return iconos.get(hex);
+    };
 
-    for (const p of puntos) {
-      L.marker([p.coords.lat, p.coords.lng], { icon: icono })
-        .bindPopup(crearPopup(p))
+    for (const r of recursos) {
+      const u = UBICACIONES[r.id];
+      if (!u) continue;
+      const hex = infoCategoria(color ?? r.categorias[0]!).paleta.hex;
+      L.marker([u.lat, u.lng], { icon: icono(hex) })
+        .bindPopup(crearPopup(r, u.exacta))
         .addTo(capaMarcadores.current);
     }
-  }, [puntos, estado]);
+  }, [recursos, color, estado]);
 
   return (
     // `isolate` crea un contexto de apilamiento propio: sin esto, los
@@ -145,13 +177,11 @@ export function MapaPuntos({ puntos }: { puntos: Punto[] }) {
       */}
       <div
         ref={contenedor}
-        className="h-[380px] w-full rounded-xl border border-line bg-muted"
+        className="h-[240px] w-full rounded-xl sm:h-[380px] border border-line bg-muted"
         role="region"
-        aria-label="Mapa con los comedores sociales de Granada"
+        aria-label="Mapa con los sitios de ayuda de Granada"
       />
-      <p className="sr-only">
-        La lista de comedores debajo de este mapa tiene la misma información en texto.
-      </p>
+      <p className="sr-only">La lista debajo de este mapa tiene la misma información en texto.</p>
       {estado !== "listo" && (
         <p className="absolute inset-0 flex items-center justify-center rounded-xl text-base text-warm">
           {estado === "cargando"

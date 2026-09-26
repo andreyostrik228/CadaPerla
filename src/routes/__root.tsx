@@ -10,7 +10,7 @@ import {
 import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { ORIENTACION, telefonoEnlace } from "../data/puntos";
+import { ORIENTACION, telefonoEnlace } from "../data/recursos";
 
 function NotFoundComponent() {
   return (
@@ -27,21 +27,24 @@ function NotFoundComponent() {
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <Link
-            to="/necesito-comida"
+            to="/"
             className="inline-flex items-center justify-center rounded-md bg-accent px-4 py-2 text-base font-semibold text-accent-foreground transition-colors hover:bg-accent/90"
           >
-            Necesito comida
+            Necesito ayuda
           </Link>
           <Link
-            to="/"
+            to="/mapa"
             className="inline-flex items-center justify-center rounded-md border-2 border-primary px-4 py-2 text-base font-medium text-primary transition-colors hover:bg-primary/10"
           >
-            Ir al inicio
+            Ver el mapa
           </Link>
         </div>
         <p className="mt-4 text-base text-muted-foreground">
           ¿Necesitas ayuda ahora? Llama al{" "}
-          <a className="font-semibold text-primary underline" href={`tel:${telefonoEnlace(ORIENTACION.telefonos[0] ?? "")}`}>
+          <a
+            className="font-semibold text-primary underline"
+            href={`tel:${telefonoEnlace(ORIENTACION.telefonos[0] ?? "")}`}
+          >
             {ORIENTACION.telefonos[0]}
           </a>
         </p>
@@ -86,7 +89,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         </div>
         <p className="mt-4 text-base text-muted-foreground">
           ¿Necesitas ayuda ahora? Llama al{" "}
-          <a className="font-semibold text-primary underline" href={`tel:${telefonoEnlace(ORIENTACION.telefonos[0] ?? "")}`}>
+          <a
+            className="font-semibold text-primary underline"
+            href={`tel:${telefonoEnlace(ORIENTACION.telefonos[0] ?? "")}`}
+          >
             {ORIENTACION.telefonos[0]}
           </a>
         </p>
@@ -100,17 +106,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Cada Perla — Comida cerca de ti, hoy" },
+      { title: "Cada Perla — la ayuda que hay en Granada" },
       {
         name: "description",
         content:
-          "Comedores sociales de Granada: dirección, teléfono y qué hace falta llevar. Gratis, sin datos personales, y cada dato con su fuente.",
+          "La ayuda que hay en Granada: comer, dormir, salud, papeles, trabajo y más. Gratis, sin datos personales, y cada dato con su fuente.",
       },
-      { property: "og:title", content: "Cada Perla — Comida cerca de ti, hoy" },
+      { property: "og:title", content: "Cada Perla — la ayuda que hay en Granada" },
       {
         property: "og:description",
         content:
-          "Comedores sociales de Granada: dónde están, qué dan de comer y a qué teléfono llamar.",
+          "Dónde comer, dormir, ducharte, ir al médico o arreglar papeles en Granada, y a qué teléfono llamar.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://andreyostrik228.github.io/" },

@@ -11,11 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ContactoRouteImport } from './routes/contacto'
+import { Route as MapaRouteImport } from './routes/mapa'
 import { Route as NecesitoComidaRouteImport } from './routes/necesito-comida'
 import { Route as PreguntasRouteImport } from './routes/preguntas'
 import { Route as PuntosDeRepartoRouteImport } from './routes/puntos-de-reparto'
 import { Route as QueEsCadaPerlaRouteImport } from './routes/que-es-cada-perla'
 import { Route as QuieroAyudarRouteImport } from './routes/quiero-ayudar'
+import { Route as AyudaCategoriaRouteImport } from './routes/ayuda/$categoria'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -25,6 +27,11 @@ const IndexRoute = IndexRouteImport.update({
 const ContactoRoute = ContactoRouteImport.update({
   id: '/contacto',
   path: '/contacto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MapaRoute = MapaRouteImport.update({
+  id: '/mapa',
+  path: '/mapa',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NecesitoComidaRoute = NecesitoComidaRouteImport.update({
@@ -52,73 +59,92 @@ const QuieroAyudarRoute = QuieroAyudarRouteImport.update({
   path: '/quiero-ayudar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AyudaCategoriaRoute = AyudaCategoriaRouteImport.update({
+  id: '/ayuda/$categoria',
+  path: '/ayuda/$categoria',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/contacto': typeof ContactoRoute
+  '/mapa': typeof MapaRoute
   '/necesito-comida': typeof NecesitoComidaRoute
   '/preguntas': typeof PreguntasRoute
   '/puntos-de-reparto': typeof PuntosDeRepartoRoute
   '/que-es-cada-perla': typeof QueEsCadaPerlaRoute
   '/quiero-ayudar': typeof QuieroAyudarRoute
+  '/ayuda/$categoria': typeof AyudaCategoriaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/contacto': typeof ContactoRoute
+  '/mapa': typeof MapaRoute
   '/necesito-comida': typeof NecesitoComidaRoute
   '/preguntas': typeof PreguntasRoute
   '/puntos-de-reparto': typeof PuntosDeRepartoRoute
   '/que-es-cada-perla': typeof QueEsCadaPerlaRoute
   '/quiero-ayudar': typeof QuieroAyudarRoute
+  '/ayuda/$categoria': typeof AyudaCategoriaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/contacto': typeof ContactoRoute
+  '/mapa': typeof MapaRoute
   '/necesito-comida': typeof NecesitoComidaRoute
   '/preguntas': typeof PreguntasRoute
   '/puntos-de-reparto': typeof PuntosDeRepartoRoute
   '/que-es-cada-perla': typeof QueEsCadaPerlaRoute
   '/quiero-ayudar': typeof QuieroAyudarRoute
+  '/ayuda/$categoria': typeof AyudaCategoriaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/contacto'
+    | '/mapa'
     | '/necesito-comida'
     | '/preguntas'
     | '/puntos-de-reparto'
     | '/que-es-cada-perla'
     | '/quiero-ayudar'
+    | '/ayuda/$categoria'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/contacto'
+    | '/mapa'
     | '/necesito-comida'
     | '/preguntas'
     | '/puntos-de-reparto'
     | '/que-es-cada-perla'
     | '/quiero-ayudar'
+    | '/ayuda/$categoria'
   id:
     | '__root__'
     | '/'
     | '/contacto'
+    | '/mapa'
     | '/necesito-comida'
     | '/preguntas'
     | '/puntos-de-reparto'
     | '/que-es-cada-perla'
     | '/quiero-ayudar'
+    | '/ayuda/$categoria'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ContactoRoute: typeof ContactoRoute
+  MapaRoute: typeof MapaRoute
   NecesitoComidaRoute: typeof NecesitoComidaRoute
   PreguntasRoute: typeof PreguntasRoute
   PuntosDeRepartoRoute: typeof PuntosDeRepartoRoute
   QueEsCadaPerlaRoute: typeof QueEsCadaPerlaRoute
   QuieroAyudarRoute: typeof QuieroAyudarRoute
+  AyudaCategoriaRoute: typeof AyudaCategoriaRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -135,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/contacto'
       fullPath: '/contacto'
       preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mapa': {
+      id: '/mapa'
+      path: '/mapa'
+      fullPath: '/mapa'
+      preLoaderRoute: typeof MapaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/necesito-comida': {
@@ -172,17 +205,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuieroAyudarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ayuda/$categoria': {
+      id: '/ayuda/$categoria'
+      path: '/ayuda/$categoria'
+      fullPath: '/ayuda/$categoria'
+      preLoaderRoute: typeof AyudaCategoriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ContactoRoute: ContactoRoute,
+  MapaRoute: MapaRoute,
   NecesitoComidaRoute: NecesitoComidaRoute,
   PreguntasRoute: PreguntasRoute,
   PuntosDeRepartoRoute: PuntosDeRepartoRoute,
   QueEsCadaPerlaRoute: QueEsCadaPerlaRoute,
   QuieroAyudarRoute: QuieroAyudarRoute,
+  AyudaCategoriaRoute: AyudaCategoriaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-import { ORIENTACION, telefonoEnlace } from "@/data/puntos";
+import { ORIENTACION, telefonoEnlace } from "@/data/recursos";
 import { LogoCadaPerla } from "./LogoCadaPerla";
 
 export function PieDePagina() {
@@ -10,8 +10,9 @@ export function PieDePagina() {
         <div>
           <LogoCadaPerla size={32} />
           <p className="mt-3 max-w-sm text-base text-warm">
-            Reunimos en un sitio los comedores sociales de Granada capital. No somos una
-            organización de ayuda: quien atiende son los centros que aparecen aquí.
+            Reunimos en un sitio la ayuda que hay en Granada capital: comer, dormir, salud, papeles,
+            trabajo y más. No somos una organización de ayuda: quien atiende son los centros que
+            aparecen aquí.
           </p>
         </div>
         <div>

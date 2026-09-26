@@ -5,8 +5,8 @@ import { Menu, X } from "lucide-react";
 import { LogoCadaPerla } from "./LogoCadaPerla";
 
 const OPCIONES = [
-  { to: "/necesito-comida", label: "Necesito comida" },
-  { to: "/puntos-de-reparto", label: "Puntos de reparto" },
+  { to: "/", label: "Necesito ayuda" },
+  { to: "/mapa", label: "Mapa" },
   { to: "/quiero-ayudar", label: "Quiero ayudar" },
   { to: "/que-es-cada-perla", label: "Qué es Cada Perla" },
   { to: "/preguntas", label: "Preguntas" },
@@ -19,7 +19,10 @@ export function Cabecera() {
   return (
     <header className="sticky top-0 z-50 bg-primary text-primary-foreground">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-        <Link to="/" className="rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent">
+        <Link
+          to="/"
+          className="rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+        >
           <LogoCadaPerla variante="blanco" size={24} />
         </Link>
 
@@ -31,6 +34,7 @@ export function Cabecera() {
                   to={o.to}
                   className="block rounded-sm border-b-2 border-transparent px-3 py-2 text-base font-medium text-primary-foreground transition-colors hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   activeProps={{ className: "border-accent" }}
+                  activeOptions={{ exact: o.to === "/" }}
                 >
                   {o.label}
                 </Link>
@@ -52,7 +56,11 @@ export function Cabecera() {
       </div>
 
       {abierto && (
-        <nav id="menu-movil" aria-label="Menú principal" className="border-t border-white/20 lg:hidden">
+        <nav
+          id="menu-movil"
+          aria-label="Menú principal"
+          className="border-t border-white/20 lg:hidden"
+        >
           <ul className="mx-auto max-w-6xl px-4 pb-3">
             {OPCIONES.map((o) => (
               <li key={o.to}>
@@ -61,6 +69,7 @@ export function Cabecera() {
                   onClick={() => setAbierto(false)}
                   className="block border-l-4 border-transparent px-3 py-3 text-base font-medium text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   activeProps={{ className: "border-accent" }}
+                  activeOptions={{ exact: o.to === "/" }}
                 >
                   {o.label}
                 </Link>
